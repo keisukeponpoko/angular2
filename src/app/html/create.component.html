@@ -1,0 +1,88 @@
+<form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+  <h2>
+    新規タスク
+
+    <button type="submit" class="btn btn-primary" [disabled]="!taskForm.form.valid">保存</button>
+
+    <button type="button" class="btn btn-primary" (click)="calculate()">計算</button>
+
+    <button type="button" class="btn btn-primary" (click)="addWork()">作業追加</button>
+
+    <button type="button" class="btn btn-primary" (click)="gotoBack()">戻る</button>
+  </h2>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="col-xs-5">タスク名</th>
+        <th>短め工数合計</th>
+        <th>普通工数合計</th>
+        <th>長め工数合計</th>
+        <th>納期</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col-xs-5">
+          <input type="text" class="form-control" required [(ngModel)]="task.name" name="task.name">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="task.short_time" name="task.short_time">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="task.middle_time" name="task.middle_time">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="task.long_time" name="task.long_time">
+        </td>
+        <td>
+          <input type="date" class="form-control" [(ngModel)]="task.relase" name="task.relase">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="col-xs-5">作業名</th>
+        <th>短め工数</th>
+        <th>普通工数</th>
+        <th>長め工数</th>
+        <th>削除</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let work of works; let idx = index;">
+        <td class="col-xs-5">
+          <input type="text" class="form-control" required [(ngModel)]="work.name" name="work.name{{idx}}">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="work.short_time" name="work.short_time{{idx}}">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="work.middle_time" name="work.middle_time{{idx}}">
+        </td>
+        <td>
+          <input type="number" class="form-control" required [(ngModel)]="work.long_time" name="work.long_time{{idx}}">
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" (click)="deleteWork(idx)">削除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+<div *ngIf="reports.length > 0">
+  <p>
+    ||作業||工数||<br>
+    <span *ngFor="let report of reports">
+      |{{report.name}}|{{report.time}}h|<br>
+    </span>
+  </p>
+
+  <p>
+    {{limitTime}}h±{{bufferTime}}h
+  </p>
+</div>
